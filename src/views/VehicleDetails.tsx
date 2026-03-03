@@ -4,7 +4,7 @@ import { Sidebar } from '../components/Sidebar';
 import { vehicleDetailsData as initialData } from '../data/mockData';
 
 export function VehicleDetails({ onNavigate }: { onNavigate: (view: string) => void }) {
-  const { data: fleetData } = useFleet();
+  const { data: fleetData, downloadReport } = useFleet();
 
   // Mix static details with real-time telemetry from the first vehicle
   const realTimeVehicle = fleetData.vehicles[0];
@@ -34,7 +34,7 @@ export function VehicleDetails({ onNavigate }: { onNavigate: (view: string) => v
             <button className="p-2 text-slate-500 hover:text-primary transition-colors">
               <span className="material-symbols-outlined">settings</span>
             </button>
-            <button className="ml-2 flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-white text-sm font-bold rounded-lg transition-all shadow-lg shadow-primary/20">
+            <button onClick={() => downloadReport('fleet')} className="ml-2 flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-white text-sm font-bold rounded-lg transition-all shadow-lg shadow-primary/20">
               <span className="material-symbols-outlined text-[18px]">download</span> Gerar Relatório
             </button>
           </div>
