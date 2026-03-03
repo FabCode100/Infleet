@@ -3,12 +3,17 @@ defmodule Api.Services.GeminiService do
   Service to interact with Google Gemini API from the backend.
   """
 
-  @base_url "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent"
+  # Using v1beta as it has better support for standard model names
+  @base_url "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
 
   def generate_insight(telemetry_data, alerts) do
-    api_key = Application.get_env(:api, :gemini_api_key)
+    api_key = 
+      :api
+      |> Application.get_env(:gemini_api_key)
+      |> to_string()
+      |> String.trim()
 
-    if is_nil(api_key) or api_key == "" do
+    if api_key == "" or api_key == "nil" do
       {:error, "GEMINI_API_KEY not configured in backend"}
     else
       prompt = """
