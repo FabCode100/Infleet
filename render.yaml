@@ -1,0 +1,28 @@
+# Render Blueprint for InFleet Dashboard
+
+services:
+  - type: web
+    name: infleet-api
+    env: docker
+    dockerContext: ./api
+    dockerfilePath: ./api/Dockerfile
+    healthCheckPath: /health
+    preDeployCommand: /app/bin/migrate
+    plan: free
+    envVars:
+      - key: MIX_ENV
+        value: prod
+      - key: PHX_SERVER
+        value: true
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        sync: false # Set manually in Render dashboard
+      - key: SECRET_KEY_BASE
+        sync: false # Set manually in Render dashboard
+      - key: PHX_HOST
+        value: infleet-api.onrender.com # Change this if you have a custom domain
+      - key: GEMINI_API_KEY
+        sync: false # Set manually
+      - key: ECTO_IPV6
+        value: false

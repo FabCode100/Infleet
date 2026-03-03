@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useFleet } from '../hooks/useFleet';
 import { Sidebar } from '../components/Sidebar';
-import { alertsData } from '../data/mockData';
 
 export function Alerts({ onNavigate }: { onNavigate: (view: string) => void }) {
-  const [data, setData] = useState(alertsData);
-
-  useEffect(() => {
-    // fetch('/api/alerts').then(res => res.json()).then(setData);
-  }, []);
+  const { alerts: data } = useFleet();
 
   return (
     <div className="flex h-screen overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
       <Sidebar activeView="alerts" onNavigate={onNavigate} />
-      
+
       <main className="flex-1 flex flex-col min-w-0 bg-slate-50 dark:bg-background-dark">
         {/* Top Navbar */}
         <header className="h-16 flex items-center justify-between px-8 bg-white dark:bg-background-dark border-b border-slate-200 dark:border-slate-800 shrink-0">
@@ -23,7 +18,7 @@ export function Alerts({ onNavigate }: { onNavigate: (view: string) => void }) {
           <div className="flex items-center gap-4">
             <div className="relative flex items-center">
               <span className="material-symbols-outlined absolute left-3 text-slate-400">search</span>
-              <input className="pl-10 pr-4 py-1.5 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary w-64" placeholder="Filtrar placa ou motorista..." type="text"/>
+              <input className="pl-10 pr-4 py-1.5 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary w-64" placeholder="Filtrar placa ou motorista..." type="text" />
             </div>
             <button className="flex items-center justify-center p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
               <span className="material-symbols-outlined">settings</span>
@@ -70,7 +65,7 @@ export function Alerts({ onNavigate }: { onNavigate: (view: string) => void }) {
                   <div>
                     <h2 className="text-2xl font-extrabold tracking-tight">Frenagem Brusca Detectada</h2>
                     <p className="text-slate-500 flex items-center gap-2 mt-1">
-                      <span className="font-semibold text-slate-700 dark:text-slate-300">Veículo FLT-8890</span> 
+                      <span className="font-semibold text-slate-700 dark:text-slate-300">Veículo FLT-8890</span>
                       • Ocorrido às 12:45:12 em São Paulo, SP
                     </p>
                   </div>
@@ -90,7 +85,7 @@ export function Alerts({ onNavigate }: { onNavigate: (view: string) => void }) {
 
               {/* Map Preview */}
               <div className="relative w-full h-48 rounded-xl overflow-hidden mb-6 border border-slate-200 dark:border-slate-800">
-                <img className="w-full h-full object-cover grayscale opacity-50" alt="Map" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpSPGxZNovpbVmBB6SFKMSuhu2teJxfuyn8kV6K8BzOw1U1U8KNCQbLO6OvNRI7KUG1BpZ1s9ndub4Ijc3KRWK4epLBYX3UTOR45Anedzp44IxuswS0HchOujcOIyvdeED3Z7SOPl-AhrU3w8dVdoTSmlIRqhrEkiiNZS4ZBw6DYynVUtY7_GcqiARSjdcBas_grDz8_YLJZM8hTOXEHHnCTugobbC9wadhKO3ejW5u0sqB5D8uMXBH9XLzxGo10DkWhyi93cTNGG8"/>
+                <img className="w-full h-full object-cover grayscale opacity-50" alt="Map" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpSPGxZNovpbVmBB6SFKMSuhu2teJxfuyn8kV6K8BzOw1U1U8KNCQbLO6OvNRI7KUG1BpZ1s9ndub4Ijc3KRWK4epLBYX3UTOR45Anedzp44IxuswS0HchOujcOIyvdeED3Z7SOPl-AhrU3w8dVdoTSmlIRqhrEkiiNZS4ZBw6DYynVUtY7_GcqiARSjdcBas_grDz8_YLJZM8hTOXEHHnCTugobbC9wadhKO3ejW5u0sqB5D8uMXBH9XLzxGo10DkWhyi93cTNGG8" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent"></div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                   <div className="relative">
@@ -161,7 +156,7 @@ export function Alerts({ onNavigate }: { onNavigate: (view: string) => void }) {
               <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Motorista</h4>
               <div className="flex items-center gap-3 mb-4">
                 <div className="size-12 rounded-full overflow-hidden">
-                  <img alt="João" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4ixnx-wwfXOYOz_OZ-JElUUW6obfVn2Hc4Fgyd0Os8UA6JLP81e_ID7HZyGTc4t1gZlCZOeXhg67mk35oQkUtoFZE2TxVovoKrqc4c65MCR5nRmD4piU9LBerl1sGbfr-8cLNFPYnmWBUD-ETxbXw1fSps1rmCpeST-CE9ZEukYYyqFB7gfse0P6gK2HfWKFEHERar5TCg6KCPBHtH1V6RVOK4R5x7PMMCKQy-xA-2sv2DfPlHncyDDsdNl12_mdwOYTps4l8JrWb"/>
+                  <img alt="João" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4ixnx-wwfXOYOz_OZ-JElUUW6obfVn2Hc4Fgyd0Os8UA6JLP81e_ID7HZyGTc4t1gZlCZOeXhg67mk35oQkUtoFZE2TxVovoKrqc4c65MCR5nRmD4piU9LBerl1sGbfr-8cLNFPYnmWBUD-ETxbXw1fSps1rmCpeST-CE9ZEukYYyqFB7gfse0P6gK2HfWKFEHERar5TCg6KCPBHtH1V6RVOK4R5x7PMMCKQy-xA-2sv2DfPlHncyDDsdNl12_mdwOYTps4l8JrWb" />
                 </div>
                 <div>
                   <p className="font-bold">João Silva</p>

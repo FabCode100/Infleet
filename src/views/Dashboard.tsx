@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useFleet } from '../hooks/useFleet';
+import { useCopilot } from '../hooks/useCopilot';
 import { Sidebar } from '../components/Sidebar';
-import { dashboardData } from '../data/mockData';
 
 export function Dashboard({ onNavigate }: { onNavigate: (view: string) => void }) {
-  const [data, setData] = useState(dashboardData);
-
-  useEffect(() => {
-    // Ready for backend integration
-    // fetch('/api/dashboard').then(res => res.json()).then(setData);
-  }, []);
+  const { data } = useFleet();
+  const { insight, isLoading } = useCopilot(data.vehicles, data.alerts);
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
       <Sidebar activeView="dashboard" onNavigate={onNavigate} />
-      
+
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
         <header className="h-16 flex items-center justify-between px-8 border-b border-border-subtle bg-white/5 backdrop-blur-md">
@@ -31,7 +27,7 @@ export function Dashboard({ onNavigate }: { onNavigate: (view: string) => void }
               <span className="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-background-dark"></span>
             </div>
             <button className="flex items-center gap-3 pl-2 pr-4 py-1.5 bg-surface rounded-full border border-border-subtle">
-              <img className="size-7 rounded-full object-cover" alt="User profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwxNDr1sZ-SAp1awb7ktoAiQjcLTDug9LFcne0E6btH6MxSdcL-GS1jZ-4zqL9CXQkZFvLeatxreQK-SMDy_iKY3fZl5g5tdwKIF1vVaNDnxDlZJLUWA3XOTcXX5_oOJGtCFuVBEWXLcFbhoAuoageJgeFPy2YOkhVw3d2E2JK_OY0Ic1o3dLH7qi8J67RYrSgQoZEUuOtLnBJyrNIL50c9kCqKFuuNLjHagVqE9cY7D8Oudg6icqaqZS8wNNA8oNUJzBJ99A09PdX"/>
+              <img className="size-7 rounded-full object-cover" alt="User profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwxNDr1sZ-SAp1awb7ktoAiQjcLTDug9LFcne0E6btH6MxSdcL-GS1jZ-4zqL9CXQkZFvLeatxreQK-SMDy_iKY3fZl5g5tdwKIF1vVaNDnxDlZJLUWA3XOTcXX5_oOJGtCFuVBEWXLcFbhoAuoageJgeFPy2YOkhVw3d2E2JK_OY0Ic1o3dLH7qi8J67RYrSgQoZEUuOtLnBJyrNIL50c9kCqKFuuNLjHagVqE9cY7D8Oudg6icqaqZS8wNNA8oNUJzBJ99A09PdX" />
               <span className="text-sm font-medium">Alex Rivera</span>
               <span className="material-symbols-outlined text-sm">expand_more</span>
             </button>
@@ -83,13 +79,13 @@ export function Dashboard({ onNavigate }: { onNavigate: (view: string) => void }
               <div className="absolute top-1/2 left-1/2 size-4 bg-emerald-500 rounded-full border-2 border-white shadow-lg shadow-emerald-500/50"></div>
               <div className="absolute top-1/3 left-2/3 size-4 bg-red-500 rounded-full border-2 border-white shadow-lg shadow-red-500/50"></div>
               <div className="absolute bottom-1/4 right-1/4 size-4 bg-emerald-500 rounded-full border-2 border-white shadow-lg shadow-emerald-500/50"></div>
-              
+
               <div className="absolute top-4 right-4 flex flex-col gap-2">
                 <button className="size-10 bg-surface rounded-lg border border-border-subtle flex items-center justify-center hover:bg-slate-700"><span className="material-symbols-outlined">add</span></button>
                 <button className="size-10 bg-surface rounded-lg border border-border-subtle flex items-center justify-center hover:bg-slate-700"><span className="material-symbols-outlined">remove</span></button>
                 <button className="size-10 bg-surface rounded-lg border border-border-subtle flex items-center justify-center hover:bg-slate-700"><span className="material-symbols-outlined">my_location</span></button>
               </div>
-              
+
               <div className="absolute bottom-4 left-4 p-3 bg-surface/90 backdrop-blur rounded-lg border border-border-subtle flex gap-4">
                 <div className="flex items-center gap-2 text-xs"><span className="size-2 rounded-full bg-emerald-500"></span><span>Em Movimento (138)</span></div>
                 <div className="flex items-center gap-2 text-xs"><span className="size-2 rounded-full bg-red-500"></span><span>Alerta (3)</span></div>
@@ -124,7 +120,9 @@ export function Dashboard({ onNavigate }: { onNavigate: (view: string) => void }
                   <h3 className="font-bold">Copilot Insights</h3>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-xs text-slate-400 leading-relaxed italic">"Preventive maintenance recommended for **Vehicle #205**. Brake pad degradation trend detected."</p>
+                  <p className="text-xs text-slate-400 leading-relaxed italic">
+                    {isLoading ? "Gerando insight..." : `"${insight}"`}
+                  </p>
                   <button className="w-full mt-2 py-2 bg-primary rounded-lg text-xs font-bold text-white hover:bg-primary/90 transition-colors">
                     Schedule Maintenance
                   </button>
@@ -139,7 +137,7 @@ export function Dashboard({ onNavigate }: { onNavigate: (view: string) => void }
               <h3 className="font-bold">Lista da Frota de Veículos</h3>
               <div className="flex gap-2">
                 <div className="relative">
-                  <input className="bg-background-dark border-border-subtle rounded-lg text-xs pl-8 pr-4 py-1.5 focus:ring-primary focus:border-primary w-64" placeholder="Filtrar veículos..." type="text"/>
+                  <input className="bg-background-dark border-border-subtle rounded-lg text-xs pl-8 pr-4 py-1.5 focus:ring-primary focus:border-primary w-64" placeholder="Filtrar veículos..." type="text" />
                   <span className="material-symbols-outlined absolute left-2 top-1.5 text-slate-500 text-sm">search</span>
                 </div>
                 <button className="px-3 py-1.5 border border-border-subtle rounded-lg text-xs font-medium hover:bg-white/5 flex items-center gap-1"><span className="material-symbols-outlined text-xs">filter_list</span> Filtrar</button>

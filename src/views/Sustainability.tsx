@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useFleet } from '../hooks/useFleet';
 import { Sidebar } from '../components/Sidebar';
-import { sustainabilityData } from '../data/mockData';
+import { sustainabilityData as initialData } from '../data/mockData';
 
 export function Sustainability({ onNavigate }: { onNavigate: (view: string) => void }) {
-  const [data, setData] = useState(sustainabilityData);
-
-  useEffect(() => {
-    // fetch('/api/sustainability').then(res => res.json()).then(setData);
-  }, []);
+  // Using initial mock data as base, could be expanded in hook
+  const data = initialData;
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
       <Sidebar activeView="sustainability" onNavigate={onNavigate} />
-      
+
       <main className="flex-1 flex flex-col overflow-y-auto">
         {/* Top Navigation Bar */}
         <header className="flex items-center justify-between border-b border-border-dark px-6 py-4 lg:px-10 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
@@ -40,7 +37,7 @@ export function Sustainability({ onNavigate }: { onNavigate: (view: string) => v
               <span className="material-symbols-outlined text-white">notifications</span>
             </button>
             <div className="h-10 w-10 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center overflow-hidden">
-              <img className="w-full h-full object-cover" alt="User profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAupyOjjyKsopi5-o3d4rZ1R98L0kmUcaU-8EXqTNY4AAMC6y6PfPAJM5JTtSGRnALLdzOM6gXtv64sx1cOCERWOO2qxYdPgeFj3G-1OIyJ-pF5l3uSLlceOHJiyQ3ka28BGc7iEqXo3d-qWRHu0jEVdlmxZCMZxxggiqgNLa2Qwau2lCcPc4TVshS7QghQjbAWSR2vdd7ptZwmje82pfi0JOYyOQV-wkcTR6ENVpbbmS4NW6ws27_rSdexcyGV-Gd0AUoYpIMiTVSF"/>
+              <img className="w-full h-full object-cover" alt="User profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAupyOjjyKsopi5-o3d4rZ1R98L0kmUcaU-8EXqTNY4AAMC6y6PfPAJM5JTtSGRnALLdzOM6gXtv64sx1cOCERWOO2qxYdPgeFj3G-1OIyJ-pF5l3uSLlceOHJiyQ3ka28BGc7iEqXo3d-qWRHu0jEVdlmxZCMZxxggiqgNLa2Qwau2lCcPc4TVshS7QghQjbAWSR2vdd7ptZwmje82pfi0JOYyOQV-wkcTR6ENVpbbmS4NW6ws27_rSdexcyGV-Gd0AUoYpIMiTVSF" />
             </div>
           </div>
         </header>
@@ -65,14 +62,14 @@ export function Sustainability({ onNavigate }: { onNavigate: (view: string) => v
               <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Data de Início</label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">calendar_today</span>
-                <input className="w-full bg-background-dark border-border-dark rounded-lg pl-10 text-sm text-slate-200 focus:ring-primary focus:border-primary" type="date"/>
+                <input className="w-full bg-background-dark border-border-dark rounded-lg pl-10 text-sm text-slate-200 focus:ring-primary focus:border-primary" type="date" />
               </div>
             </div>
             <div className="flex flex-col gap-1 flex-1 min-w-[200px]">
               <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Data de Término</label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">calendar_month</span>
-                <input className="w-full bg-background-dark border-border-dark rounded-lg pl-10 text-sm text-slate-200 focus:ring-primary focus:border-primary" type="date"/>
+                <input className="w-full bg-background-dark border-border-dark rounded-lg pl-10 text-sm text-slate-200 focus:ring-primary focus:border-primary" type="date" />
               </div>
             </div>
             <div className="flex flex-col gap-1 flex-1 min-w-[200px]">
@@ -161,17 +158,16 @@ export function Sustainability({ onNavigate }: { onNavigate: (view: string) => v
                   {data.drivers.map(driver => (
                     <tr key={driver.rank} className="hover:bg-slate-800/40 transition-colors">
                       <td className="px-6 py-4">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
-                          driver.rank === 1 ? 'bg-yellow-500/20 text-yellow-500' : 
-                          driver.rank === 2 ? 'bg-slate-400/20 text-slate-400' : 
-                          driver.rank === 3 ? 'bg-orange-500/20 text-orange-500' : 
-                          'bg-slate-800 text-slate-500'
-                        }`}>{driver.rank}</div>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${driver.rank === 1 ? 'bg-yellow-500/20 text-yellow-500' :
+                            driver.rank === 2 ? 'bg-slate-400/20 text-slate-400' :
+                              driver.rank === 3 ? 'bg-orange-500/20 text-orange-500' :
+                                'bg-slate-800 text-slate-500'
+                          }`}>{driver.rank}</div>
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-full bg-slate-700 flex-shrink-0">
-                            <img className="w-full h-full rounded-full object-cover" alt={driver.name} src={driver.avatar}/>
+                            <img className="w-full h-full rounded-full object-cover" alt={driver.name} src={driver.avatar} />
                           </div>
                           <span className="font-medium">{driver.name}</span>
                         </div>

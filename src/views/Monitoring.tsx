@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useFleet } from '../hooks/useFleet';
 import { Sidebar } from '../components/Sidebar';
-import { monitoringData } from '../data/mockData';
 
 export function Monitoring({ onNavigate }: { onNavigate: (view: string) => void }) {
-  const [data, setData] = useState(monitoringData);
-
-  useEffect(() => {
-    // fetch('/api/monitoring').then(res => res.json()).then(setData);
-  }, []);
+  const { monitoring: data } = useFleet();
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
       <Sidebar activeView="monitoring" onNavigate={onNavigate} />
-      
+
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Top Navigation Bar */}
         <header className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark px-6 py-3 z-10">
@@ -71,7 +66,7 @@ export function Monitoring({ onNavigate }: { onNavigate: (view: string) => void 
                       <span className="text-sm font-bold">{v.speed} km/h</span>
                     </div>
                     <button className="text-xs font-bold text-slate-400 group-hover:text-primary flex items-center gap-1">
-                      {v.status === 'Ocioso' ? 'Rastreamento' : 'Detalhes'} 
+                      {v.status === 'Ocioso' ? 'Rastreamento' : 'Detalhes'}
                       <span className="material-symbols-outlined text-sm">{v.status === 'Ocioso' ? 'location_on' : 'chevron_right'}</span>
                     </button>
                   </div>
@@ -84,8 +79,8 @@ export function Monitoring({ onNavigate }: { onNavigate: (view: string) => void 
           <section className="flex-1 flex flex-col relative overflow-hidden">
             {/* Map View Area */}
             <div className="flex-1 relative bg-slate-200 dark:bg-slate-800 overflow-hidden">
-              <div className="absolute inset-0 bg-cover bg-center opacity-80" style={{backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuA0c2IAunPH-50bMfK3I0K14jRzkHpJoIyjHwGMPF2QV7BoA7YBPlFTqtG3bHlC6u36hrKIs9oLddUfGOY_D31talTybU7o2STiSzV49Wjq6kQo8Bg1cvZEzZCHsGZ4c7elxtA5GHlLeLFNzYqPLNQvAEDWUnvqVW69q0yuWi5y1hW_SG-6vgjz9CKlLdiZ_SULCEoOQeAlDdoHAHt0iWg90drob9xwAxSMM3TTOo4dQzbOaLGpK3Bhp4tHF-qp4mJnfD0ScIlAOAFp')"}}></div>
-              
+              <div className="absolute inset-0 bg-cover bg-center opacity-80" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuA0c2IAunPH-50bMfK3I0K14jRzkHpJoIyjHwGMPF2QV7BoA7YBPlFTqtG3bHlC6u36hrKIs9oLddUfGOY_D31talTybU7o2STiSzV49Wjq6kQo8Bg1cvZEzZCHsGZ4c7elxtA5GHlLeLFNzYqPLNQvAEDWUnvqVW69q0yuWi5y1hW_SG-6vgjz9CKlLdiZ_SULCEoOQeAlDdoHAHt0iWg90drob9xwAxSMM3TTOo4dQzbOaLGpK3Bhp4tHF-qp4mJnfD0ScIlAOAFp')" }}></div>
+
               {/* Map Overlays */}
               <div className="absolute top-4 left-4 flex flex-col gap-2">
                 <div className="bg-white/90 dark:bg-background-dark/90 backdrop-blur shadow-lg rounded-lg p-2 flex flex-col gap-1">
@@ -95,7 +90,7 @@ export function Monitoring({ onNavigate }: { onNavigate: (view: string) => void 
                 </div>
                 <button className="bg-white/90 dark:bg-background-dark/90 backdrop-blur shadow-lg rounded-lg p-3 text-slate-700 dark:text-slate-300 hover:text-primary"><span className="material-symbols-outlined">my_location</span></button>
               </div>
-              
+
               <div className="absolute top-4 right-4 bg-white/90 dark:bg-background-dark/90 backdrop-blur shadow-lg rounded-lg px-4 py-2 flex items-center gap-4">
                 <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-green-500"></span><span className="text-xs font-bold text-slate-700 dark:text-slate-300">18 Normal</span></div>
                 <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-amber-500"></span><span className="text-xs font-bold text-slate-700 dark:text-slate-300">4 Avisos</span></div>

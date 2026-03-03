@@ -1,18 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import { useFleet } from '../hooks/useFleet';
+import { useCopilot } from '../hooks/useCopilot';
 import { Sidebar } from '../components/Sidebar';
-import { vehicleDetailsData } from '../data/mockData';
+import { vehicleDetailsData as initialData } from '../data/mockData';
 
 export function VehicleDetails({ onNavigate }: { onNavigate: (view: string) => void }) {
-  const [data, setData] = useState(vehicleDetailsData);
+  const { data: fleetData } = useFleet();
 
-  useEffect(() => {
-    // fetch('/api/vehicles/VF-902').then(res => res.json()).then(setData);
-  }, []);
+  // Mix static details with real-time telemetry from the first vehicle
+  const realTimeVehicle = fleetData.vehicles[0];
+  const { insight, isLoading } = useCopilot(fleetData.vehicles, fleetData.alerts);
+
+  const data = {
+    ...initialData,
+    fuelLevel: realTimeVehicle?.fuel || initialData.fuelLevel,
+    speedAvg: realTimeVehicle?.speed || initialData.speedAvg
+  };
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
       <Sidebar activeView="vehicle-details" onNavigate={onNavigate} />
-      
+
       <main className="flex-1 flex flex-col overflow-y-auto custom-scrollbar">
         {/* Top Navigation */}
         <header className="h-16 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 sticky top-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md z-10">
@@ -53,7 +60,9 @@ export function VehicleDetails({ onNavigate }: { onNavigate: (view: string) => v
                 <span className="material-symbols-outlined text-primary">auto_awesome</span>
                 <h3 className="text-primary font-bold tracking-tight uppercase text-xs">Insight do Copiloto</h3>
               </div>
-              <p className="text-slate-800 dark:text-slate-200 leading-relaxed font-medium">"Este motorista tem um perfil de aceleração agressiva. Sugerimos treinamento de direção defensiva para otimizar a eficiência de combustível e segurança."</p>
+              <p className="text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
+                {isLoading ? "Gerando insight..." : `"${insight}"`}
+              </p>
               <button className="mt-6 text-primary text-sm font-bold flex items-center gap-1 hover:underline underline-offset-4">Revisar perfil detalhado <span className="material-symbols-outlined text-[16px]">arrow_forward</span></button>
             </div>
 
