@@ -4,7 +4,7 @@ defmodule Api.Services.GeminiService do
   """
 
   # Using v1beta as it has better support for standard model names
-  @base_url "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+  @base_url "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
 
   def generate_insight(telemetry_data, alerts) do
     api_key =
