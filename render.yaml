@@ -7,7 +7,6 @@ services:
     dockerContext: ./api
     dockerfilePath: ./api/Dockerfile
     healthCheckPath: /health
-    preDeployCommand: /app/bin/migrate
     plan: free
     envVars:
       - key: MIX_ENV
