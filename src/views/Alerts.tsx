@@ -2,7 +2,7 @@ import { useFleet } from '../hooks/useFleet';
 import { Sidebar } from '../components/Sidebar';
 
 export function Alerts({ onNavigate }: { onNavigate: (view: string) => void }) {
-  const { alerts: data } = useFleet();
+  const { alerts: data, downloadReport } = useFleet();
 
   return (
     <div className="flex h-screen overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
@@ -144,7 +144,7 @@ export function Alerts({ onNavigate }: { onNavigate: (view: string) => void }) {
                   <p className="text-lg font-bold">1.8s</p>
                 </div>
               </div>
-              <button className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-800 rounded-lg font-bold text-sm hover:bg-primary hover:text-white transition-all">
+              <button onClick={() => downloadReport('incidents')} className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-800 rounded-lg font-bold text-sm hover:bg-primary hover:text-white transition-all">
                 <span className="material-symbols-outlined">description</span> Gerar Relatório de Incidente
               </button>
             </div>

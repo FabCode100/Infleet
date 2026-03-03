@@ -120,5 +120,10 @@ export function useFleet() {
         };
     }, []);
 
-    return { data, monitoring, alerts };
+    const downloadReport = (type: 'fleet' | 'incidents') => {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+        window.open(`${apiUrl}/reports/${type}`, '_blank');
+    };
+
+    return { data, monitoring, alerts, downloadReport };
 }

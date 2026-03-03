@@ -3,9 +3,9 @@
  * This ensures the API key remains secure on the server.
  */
 export async function generateFleetInsights(telemetryData: any[], alerts: any[]) {
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
     try {
-        const response = await fetch(`${API_URL}/api/insights`, {
+        const response = await fetch(`${API_URL}/insights`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

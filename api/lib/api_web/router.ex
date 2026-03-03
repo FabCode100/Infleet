@@ -11,6 +11,8 @@ defmodule ApiWeb.Router do
     pipe_through :api
 
     post "/insights", InsightController, :generate
+    get "/reports/fleet", ReportController, :fleet_summary
+    get "/reports/incidents", ReportController, :incident_report
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
