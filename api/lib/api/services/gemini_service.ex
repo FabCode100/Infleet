@@ -4,10 +4,10 @@ defmodule Api.Services.GeminiService do
   """
 
   # Using v1beta as it has better support for standard model names
-  @base_url "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+  @base_url "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 
   def generate_insight(telemetry_data, alerts) do
-    api_key = 
+    api_key =
       :api
       |> Application.get_env(:gemini_api_key)
       |> to_string()
@@ -43,7 +43,11 @@ defmodule Api.Services.GeminiService do
       url = "#{@base_url}?key=#{api_key}"
 
       case Req.post(url, json: body) do
-        {:ok, %{status: 200, body: %{"candidates" => [%{"content" => %{"parts" => [%{"text" => text} | _]}} | _]}}} ->
+        {:ok,
+         %{
+           status: 200,
+           body: %{"candidates" => [%{"content" => %{"parts" => [%{"text" => text} | _]}} | _]}
+         }} ->
           {:ok, String.trim(text)}
 
         {:ok, response} ->
