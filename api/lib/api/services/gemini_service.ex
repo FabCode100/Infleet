@@ -3,7 +3,7 @@ defmodule Api.Services.GeminiService do
   Service to interact with Google Gemini API from the backend.
   """
 
-  @base_url "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+  @base_url "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent"
 
   def generate_insight(telemetry_data, alerts) do
     api_key = Application.get_env(:api, :gemini_api_key)
