@@ -121,8 +121,15 @@ export function useFleet() {
     }, []);
 
     const downloadReport = (type: 'fleet' | 'incidents') => {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
-        window.open(`${apiUrl}/reports/${type}`, '_blank');
+        const DEFAULT_API_URL = 'http://localhost:4000/api';
+        const envApiUrl = import.meta.env.VITE_API_URL;
+        let baseUrl = envApiUrl || DEFAULT_API_URL;
+
+        const targetUrl = baseUrl.endsWith('/api') ? `${baseUrl}/reports/${type}` :
+            baseUrl.includes('/api/') ? `${baseUrl.split('/api/')[0]}/api/reports/${type}` :
+                `${baseUrl}/api/reports/${type}`;
+
+        window.open(targetUrl, '_blank');
     };
 
     return { data, monitoring, alerts, downloadReport };
