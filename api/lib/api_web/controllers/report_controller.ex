@@ -5,14 +5,15 @@ defmodule ApiWeb.ReportController do
 
   def fleet_summary(conn, _params) do
     vehicles = Repo.all(Fleet.Vehicle)
-    
-    csv_content = [
-      ["Placa", "Modelo", "Inserido em"],
-      Enum.map(vehicles, fn v -> [v.plate, v.model, v.inserted_at] end)
-    ]
-    |> List.flatten()
-    |> Enum.map(&Enum.join(&1, ","))
-    |> Enum.join("\n")
+
+    header = "Placa,Modelo,Data de Cadastro"
+
+    rows =
+      Enum.map_join(vehicles, "\n", fn v ->
+        "#{v.plate},#{v.model},#{v.inserted_at}"
+      end)
+
+    csv_content = header <> "\n" <> rows
 
     conn
     |> put_resp_content_type("text/csv")
@@ -21,12 +22,20 @@ defmodule ApiWeb.ReportController do
   end
 
   def incident_report(conn, _params) do
-    alerts = Repo.all(Fleet.Alert) |> Repo.preload(:vehicle)
-    
-    csv_content = "ID,Tipo,Veiculo,Mensagem,Data\n" <>
+    alerts =
+      Fleet.Alert
+      |> Repo.all()
+      |> Repo.preload(:vehicle)
+
+    header = "ID,Tipo,Veiculo,Mensagem,Data"
+
+    rows =
       Enum.map_join(alerts, "\n", fn a ->
-        "#{a.id},#{a.type},#{a.vehicle.plate},\"#{a.message}\",#{a.inserted_at}"
+        plate = if a.vehicle, do: a.vehicle.plate, else: "N/A"
+        "#{a.id},#{a.type},#{plate},\"#{a.message}\",#{a.inserted_at}"
       end)
+
+    csv_content = header <> "\n" <> rows
 
     conn
     |> put_resp_content_type("text/csv")
