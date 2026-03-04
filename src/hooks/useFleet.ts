@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { fleetSocket } from '../services/fleetSocket';
 import { dashboardData, monitoringData, alertsData } from '../data/mockData';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 export function useFleet() {
     const [data, setData] = useState(dashboardData);
@@ -151,7 +151,7 @@ export function useFleet() {
             ["Economia de Custos", "$8,500", "Meta atingida"]
         ];
 
-        doc.autoTable({
+        autoTable(doc, {
             startY: 40,
             head: [tableData[0]],
             body: tableData.slice(1),
