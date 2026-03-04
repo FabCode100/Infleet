@@ -1,9 +1,9 @@
 import { useFleet } from '../hooks/useFleet';
 import { Sidebar } from '../components/Sidebar';
+import { MobileBottomNav, MobileHeader } from '../components/MobileNav';
 import { sustainabilityData as initialData } from '../data/mockData';
 
 export function Sustainability({ onNavigate }: { onNavigate: (view: string) => void }) {
-  // Using initial mock data as base, could be expanded in hook
   const { downloadReport, downloadSustainabilityPDF } = useFleet();
   const data = initialData;
 
@@ -12,8 +12,15 @@ export function Sustainability({ onNavigate }: { onNavigate: (view: string) => v
       <Sidebar activeView="sustainability" onNavigate={onNavigate} />
 
       <main className="flex-1 flex flex-col overflow-y-auto">
-        {/* Top Navigation Bar */}
-        <header className="flex items-center justify-between border-b border-border-dark px-6 py-4 lg:px-10 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+        {/* Mobile Header */}
+        <MobileHeader title="Infleet ESG" onNavigate={onNavigate}>
+          <button onClick={downloadSustainabilityPDF} className="p-2 rounded-lg text-primary">
+            <span className="material-symbols-outlined">download</span>
+          </button>
+        </MobileHeader>
+
+        {/* Desktop Top Navigation Bar */}
+        <header className="hidden md:flex items-center justify-between border-b border-border-dark px-6 py-4 lg:px-10 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
           <div className="flex items-center gap-4">
             <div className="text-primary flex items-center justify-center">
               <span className="material-symbols-outlined text-3xl">eco</span>
@@ -43,107 +50,144 @@ export function Sustainability({ onNavigate }: { onNavigate: (view: string) => v
           </div>
         </header>
 
-        <div className="max-w-7xl mx-auto w-full px-6 py-8">
+        <div className="max-w-7xl mx-auto w-full px-4 md:px-6 py-4 md:py-8 pb-mobile-nav md:pb-8">
           {/* Page Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6 mb-6 md:mb-8">
             <div>
-              <h1 className="text-4xl font-black tracking-tight mb-2">Relatório de Sustentabilidade</h1>
-              <p className="text-slate-400 text-lg">Métricas de impacto ambiental e eficiência de recursos em tempo real.</p>
+              <h1 className="text-2xl md:text-4xl font-black tracking-tight mb-1 md:mb-2">Relatório de Sustentabilidade</h1>
+              <p className="text-slate-400 text-sm md:text-lg">Métricas de impacto ambiental e eficiência de recursos em tempo real.</p>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="hidden md:flex flex-wrap gap-3">
               <button onClick={downloadSustainabilityPDF} className="flex h-10 items-center justify-center gap-2 rounded-lg bg-primary text-white px-4 font-bold hover:opacity-90 transition-opacity">
                 <span className="material-symbols-outlined">download</span> Exportar PDF
               </button>
             </div>
           </div>
 
-          {/* Filters Section */}
-          <div className="bg-card-dark border border-border-dark rounded-xl p-4 mb-8 flex flex-wrap gap-4 items-center">
-            <div className="flex flex-col gap-1 flex-1 min-w-[200px]">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Data de Início</label>
-              <div className="relative">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">calendar_today</span>
-                <input className="w-full bg-background-dark border-border-dark rounded-lg pl-10 text-sm text-slate-200 focus:ring-primary focus:border-primary" type="date" />
+          {/* Filters Section - simplified on mobile */}
+          <div className="bg-card-dark border border-border-dark rounded-xl p-3 md:p-4 mb-6 md:mb-8 flex flex-col md:flex-row flex-wrap gap-3 md:gap-4 items-stretch md:items-center">
+            <div className="flex gap-3 flex-1 min-w-0">
+              <div className="flex flex-col gap-1 flex-1 min-w-0">
+                <label className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-wider">Início</label>
+                <div className="relative">
+                  <span className="material-symbols-outlined absolute left-2 md:left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">calendar_today</span>
+                  <input className="w-full bg-background-dark border-border-dark rounded-lg pl-8 md:pl-10 text-xs md:text-sm text-slate-200 focus:ring-primary focus:border-primary" type="date" />
+                </div>
+              </div>
+              <div className="flex flex-col gap-1 flex-1 min-w-0">
+                <label className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-wider">Término</label>
+                <div className="relative">
+                  <span className="material-symbols-outlined absolute left-2 md:left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">calendar_month</span>
+                  <input className="w-full bg-background-dark border-border-dark rounded-lg pl-8 md:pl-10 text-xs md:text-sm text-slate-200 focus:ring-primary focus:border-primary" type="date" />
+                </div>
               </div>
             </div>
-            <div className="flex flex-col gap-1 flex-1 min-w-[200px]">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Data de Término</label>
-              <div className="relative">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">calendar_month</span>
-                <input className="w-full bg-background-dark border-border-dark rounded-lg pl-10 text-sm text-slate-200 focus:ring-primary focus:border-primary" type="date" />
+            <div className="flex gap-3 flex-1 min-w-0">
+              <div className="flex flex-col gap-1 flex-1 min-w-0">
+                <label className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-wider">Grupo</label>
+                <div className="relative">
+                  <span className="material-symbols-outlined absolute left-2 md:left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">category</span>
+                  <select className="w-full bg-background-dark border-border-dark rounded-lg pl-8 md:pl-10 text-xs md:text-sm text-slate-200 appearance-none focus:ring-primary focus:border-primary">
+                    <option>Todos os Veículos</option>
+                    <option>Electric Fleet</option>
+                    <option>Long Haul Heavy</option>
+                    <option>Last Mile Delivery</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col gap-1 flex-1 min-w-[200px]">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Grupo de Veículos</label>
-              <div className="relative">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">category</span>
-                <select className="w-full bg-background-dark border-border-dark rounded-lg pl-10 text-sm text-slate-200 appearance-none focus:ring-primary focus:border-primary">
-                  <option>Todos os Veículos</option>
-                  <option>Electric Fleet</option>
-                  <option>Long Haul Heavy</option>
-                  <option>Last Mile Delivery</option>
-                </select>
+              <div className="flex items-end">
+                <button className="h-[38px] px-4 md:px-6 rounded-lg bg-border-dark hover:bg-slate-700 text-white text-xs md:text-sm font-medium transition-colors whitespace-nowrap">Aplicar</button>
               </div>
-            </div>
-            <div className="flex items-end h-full mt-5">
-              <button className="h-10 px-6 rounded-lg bg-border-dark hover:bg-slate-700 text-white font-medium transition-colors">Aplicar Filtros</button>
             </div>
           </div>
 
-          {/* Impact Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-card-dark border border-border-dark rounded-xl p-6 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-6xl text-primary">co2</span>
+          {/* Impact Cards Grid - horizontal scroll on mobile, grid on desktop */}
+          <div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8 overflow-x-auto no-scrollbar -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory">
+            <div className="bg-card-dark border border-border-dark rounded-xl p-4 md:p-6 relative overflow-hidden group min-w-[220px] md:min-w-0 snap-center shrink-0">
+              <div className="absolute top-0 right-0 p-3 md:p-4 opacity-10 group-hover:scale-110 transition-transform">
+                <span className="material-symbols-outlined text-4xl md:text-6xl text-primary">co2</span>
               </div>
-              <p className="text-slate-400 text-sm font-medium mb-1">Total de CO2 Emitido</p>
-              <h3 className="text-3xl font-bold">{data.co2Emitted} <span className="text-sm font-normal text-slate-500">toneladas</span></h3>
-              <div className="mt-4 flex items-center gap-1 text-red-400 text-sm">
-                <span className="material-symbols-outlined text-sm">trending_up</span>
-                <span>4.2% em relação ao mês passado</span>
-              </div>
-            </div>
-            <div className="bg-card-dark border border-border-dark rounded-xl p-6 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-6xl text-green-400">route</span>
-              </div>
-              <p className="text-slate-400 text-sm font-medium mb-1">Economia de Combustível</p>
-              <h3 className="text-3xl font-bold">{data.fuelSaved.toLocaleString()} <span className="text-sm font-normal text-slate-500">litros</span></h3>
-              <div className="mt-4 flex items-center gap-1 text-green-400 text-sm">
-                <span className="material-symbols-outlined text-sm">trending_down</span>
-                <span>Efeito de rotas otimizadas</span>
+              <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">Total de CO2 Emitido</p>
+              <h3 className="text-2xl md:text-3xl font-bold">{data.co2Emitted} <span className="text-[10px] md:text-sm font-normal text-slate-500">toneladas</span></h3>
+              <div className="mt-3 md:mt-4 flex items-center gap-1 text-red-400 text-xs md:text-sm">
+                <span className="material-symbols-outlined text-xs md:text-sm">trending_up</span>
+                <span>4.2% vs mês anterior</span>
               </div>
             </div>
-            <div className="bg-card-dark border border-border-dark rounded-xl p-6 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-6xl text-primary">electric_car</span>
+            <div className="bg-card-dark border border-border-dark rounded-xl p-4 md:p-6 relative overflow-hidden group min-w-[220px] md:min-w-0 snap-center shrink-0">
+              <div className="absolute top-0 right-0 p-3 md:p-4 opacity-10 group-hover:scale-110 transition-transform">
+                <span className="material-symbols-outlined text-4xl md:text-6xl text-green-400">route</span>
               </div>
-              <p className="text-slate-400 text-sm font-medium mb-1">Taxa de Uso de VE</p>
-              <h3 className="text-3xl font-bold">{data.evUsage}%</h3>
-              <div className="mt-4 w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
+              <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">Economia de Combustível</p>
+              <h3 className="text-2xl md:text-3xl font-bold">{data.fuelSaved.toLocaleString()} <span className="text-[10px] md:text-sm font-normal text-slate-500">litros</span></h3>
+              <div className="mt-3 md:mt-4 flex items-center gap-1 text-green-400 text-xs md:text-sm">
+                <span className="material-symbols-outlined text-xs md:text-sm">trending_down</span>
+                <span>Rotas otimizadas</span>
+              </div>
+            </div>
+            <div className="bg-card-dark border border-border-dark rounded-xl p-4 md:p-6 relative overflow-hidden group min-w-[220px] md:min-w-0 snap-center shrink-0">
+              <div className="absolute top-0 right-0 p-3 md:p-4 opacity-10 group-hover:scale-110 transition-transform">
+                <span className="material-symbols-outlined text-4xl md:text-6xl text-primary">electric_car</span>
+              </div>
+              <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">Taxa de Uso de VE</p>
+              <h3 className="text-2xl md:text-3xl font-bold">{data.evUsage}%</h3>
+              <div className="mt-3 md:mt-4 w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
                 <div className="bg-primary h-full" style={{ width: `${data.evUsage}%` }}></div>
               </div>
             </div>
-            <div className="bg-card-dark border border-border-dark rounded-xl p-6 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-6xl text-blue-400">payments</span>
+            <div className="bg-card-dark border border-border-dark rounded-xl p-4 md:p-6 relative overflow-hidden group min-w-[220px] md:min-w-0 snap-center shrink-0">
+              <div className="absolute top-0 right-0 p-3 md:p-4 opacity-10 group-hover:scale-110 transition-transform">
+                <span className="material-symbols-outlined text-4xl md:text-6xl text-blue-400">payments</span>
               </div>
-              <p className="text-slate-400 text-sm font-medium mb-1">Economia de Custos Estimada</p>
-              <h3 className="text-3xl font-bold">${data.costSaved.toLocaleString()}</h3>
-              <div className="mt-4 flex items-center gap-1 text-green-400 text-sm">
-                <span className="material-symbols-outlined text-sm">check_circle</span>
-                <span>Metas de eficiência atingidas</span>
+              <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">Economia de Custos</p>
+              <h3 className="text-2xl md:text-3xl font-bold">${data.costSaved.toLocaleString()}</h3>
+              <div className="mt-3 md:mt-4 flex items-center gap-1 text-green-400 text-xs md:text-sm">
+                <span className="material-symbols-outlined text-xs md:text-sm">check_circle</span>
+                <span>Metas atingidas</span>
               </div>
             </div>
           </div>
 
           {/* Ranking Table: Most Sustainable Drivers */}
           <div className="bg-card-dark border border-border-dark rounded-xl overflow-hidden shadow-2xl">
-            <div className="px-6 py-5 border-b border-border-dark flex justify-between items-center bg-slate-800/30">
-              <h3 className="text-xl font-bold flex items-center gap-2"><span className="material-symbols-outlined text-primary">emoji_events</span> Motoristas mais Sustentáveis</h3>
-              <span className="text-xs font-bold bg-primary/10 text-primary px-3 py-1 rounded-full uppercase tracking-tighter">Ranking ao Vivo</span>
+            <div className="px-4 md:px-6 py-3 md:py-5 border-b border-border-dark flex justify-between items-center bg-slate-800/30">
+              <h3 className="text-base md:text-xl font-bold flex items-center gap-2"><span className="material-symbols-outlined text-primary">emoji_events</span> <span className="hidden sm:inline">Motoristas mais</span> Sustentáveis</h3>
+              <span className="text-[10px] md:text-xs font-bold bg-primary/10 text-primary px-2 md:px-3 py-1 rounded-full uppercase tracking-tighter">Ranking ao Vivo</span>
             </div>
-            <div className="overflow-x-auto">
+
+            {/* Mobile Card Layout */}
+            <div className="md:hidden p-3 space-y-3">
+              {data.drivers.map(driver => (
+                <div key={driver.rank} className="p-3 rounded-xl border border-border-dark bg-background-dark/50 flex items-center gap-3">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${driver.rank === 1 ? 'bg-yellow-500/20 text-yellow-500' :
+                    driver.rank === 2 ? 'bg-slate-400/20 text-slate-400' :
+                      driver.rank === 3 ? 'bg-orange-500/20 text-orange-500' :
+                        'bg-slate-800 text-slate-500'
+                    }`}>{driver.rank}</div>
+                  <div className="w-9 h-9 rounded-full bg-slate-700 overflow-hidden shrink-0">
+                    <img className="w-full h-full rounded-full object-cover" alt={driver.name} src={driver.avatar} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-sm truncate">{driver.name}</p>
+                    <p className="text-[10px] text-slate-400">{driver.vehicle} • {driver.consumption}</p>
+                  </div>
+                  <div className="flex flex-col items-end gap-1 shrink-0">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-10 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                        <div className={`${driver.score >= 90 ? 'bg-green-500' : 'bg-primary'} h-full`} style={{ width: `${driver.score}%` }}></div>
+                      </div>
+                      <span className="text-xs font-bold w-6 text-right">{driver.score}</span>
+                    </div>
+                    <span className={`material-symbols-outlined text-sm ${driver.trend === 'up' ? 'text-green-400' : driver.trend === 'down' ? 'text-red-400' : 'text-slate-400'}`}>
+                      {driver.trend === 'up' ? 'trending_up' : driver.trend === 'down' ? 'trending_down' : 'horizontal_rule'}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="text-slate-400 text-xs font-bold uppercase tracking-widest border-b border-border-dark bg-slate-800/10">
@@ -193,16 +237,25 @@ export function Sustainability({ onNavigate }: { onNavigate: (view: string) => v
                 </tbody>
               </table>
             </div>
-            <div className="px-6 py-4 bg-slate-800/20 border-t border-border-dark flex items-center justify-between">
-              <p className="text-sm text-slate-400">Economia de Custos Estimada</p>
+            <div className="px-4 md:px-6 py-3 md:py-4 bg-slate-800/20 border-t border-border-dark flex items-center justify-between">
+              <p className="text-xs md:text-sm text-slate-400">Economia de Custos Estimada</p>
               <div className="flex gap-2">
-                <button className="px-3 py-1 rounded border border-border-dark text-slate-400 hover:text-white transition-colors">Anterior</button>
-                <button className="px-3 py-1 rounded border border-border-dark text-slate-400 hover:text-white transition-colors">Próximo</button>
+                <button className="px-2 md:px-3 py-1 rounded border border-border-dark text-slate-400 hover:text-white transition-colors text-xs md:text-sm">Anterior</button>
+                <button className="px-2 md:px-3 py-1 rounded border border-border-dark text-slate-400 hover:text-white transition-colors text-xs md:text-sm">Próximo</button>
               </div>
             </div>
           </div>
+
+          {/* Mobile Export Button */}
+          <div className="md:hidden mt-4">
+            <button onClick={downloadSustainabilityPDF} className="w-full flex items-center justify-center gap-2 py-3 bg-primary text-white font-bold rounded-xl transition-all shadow-lg shadow-primary/20 touch-target">
+              <span className="material-symbols-outlined">download</span> Exportar Relatório PDF
+            </button>
+          </div>
         </div>
       </main>
+
+      <MobileBottomNav activeView="sustainability" onNavigate={onNavigate} />
     </div>
   );
 }
