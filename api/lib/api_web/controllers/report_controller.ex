@@ -42,4 +42,32 @@ defmodule ApiWeb.ReportController do
     |> put_resp_header("content-disposition", "attachment; filename=\"relatorio_incidentes.csv\"")
     |> send_resp(200, csv_content)
   end
+
+  def sustainability_report(conn, _params) do
+    # In a real app, this would use many tables.
+    # Here we'll generate metrics based on the vehicles.
+    vehicles = Repo.all(Fleet.Vehicle)
+
+    header = "Veiculo,Emissao CO2 (kg/km),Economia Combustivel (L),Uso Eletrico (%)"
+
+    rows =
+      Enum.map_join(vehicles, "\n", fn v ->
+        # Mocking some metrics based on the vehicle data for the report
+        co2 = :rand.uniform(200) + 100
+        saved = :rand.uniform(500)
+        ev = if String.contains?(v.model, "Electric"), do: 100, else: :rand.uniform(20)
+
+        "#{v.plate},#{co2},#{saved},#{ev}"
+      end)
+
+    csv_content = "RELATORIO DE SUSTENTABILIDADE - INFLEET\n#{header}\n#{rows}"
+
+    conn
+    |> put_resp_content_type("text/csv")
+    |> put_resp_header(
+      "content-disposition",
+      "attachment; filename=\"relatorio_sustentabilidade.csv\""
+    )
+    |> send_resp(200, csv_content)
+  end
 end

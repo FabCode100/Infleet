@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { fleetSocket } from '../services/fleetSocket';
 import { dashboardData, monitoringData, alertsData } from '../data/mockData';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 export function useFleet() {
     const [data, setData] = useState(dashboardData);
@@ -120,7 +122,7 @@ export function useFleet() {
         };
     }, []);
 
-    const downloadReport = (type: 'fleet' | 'incidents') => {
+    const downloadReport = (type: 'fleet' | 'incidents' | 'sustainability') => {
         const DEFAULT_API_URL = 'http://localhost:4000/api';
         const envApiUrl = import.meta.env.VITE_API_URL;
         let baseUrl = envApiUrl || DEFAULT_API_URL;
@@ -132,5 +134,33 @@ export function useFleet() {
         window.open(targetUrl, '_blank');
     };
 
-    return { data, monitoring, alerts, downloadReport };
+    const downloadSustainabilityPDF = () => {
+        const doc = new jsPDF() as any;
+
+        doc.setFontSize(22);
+        doc.text("Relatório de Sustentabilidade - Infleet", 20, 20);
+
+        doc.setFontSize(12);
+        doc.text(`Data: ${new Date().toLocaleDateString()}`, 20, 30);
+
+        const tableData = [
+            ["Métrica", "Valor", "Status"],
+            ["Total de CO2 Emitido", "425 toneladas", "Atenção (+4.2%)"],
+            ["Economia de Combustível", "12,450 litros", "Eficiente"],
+            ["Taxa de Uso de VE", "68%", "Meta atingida"],
+            ["Economia de Custos", "$8,500", "Meta atingida"]
+        ];
+
+        doc.autoTable({
+            startY: 40,
+            head: [tableData[0]],
+            body: tableData.slice(1),
+            theme: 'grid',
+            headStyles: { fillColor: [25, 127, 230] }
+        });
+
+        doc.save("relatorio_sustentabilidade_infleet.pdf");
+    };
+
+    return { data, monitoring, alerts, downloadReport, downloadSustainabilityPDF };
 }

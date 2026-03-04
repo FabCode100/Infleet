@@ -2,17 +2,18 @@ defmodule ApiWeb.Router do
   use ApiWeb, :router
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug(:accepts, ["json"])
   end
 
-  get "/health", ApiWeb.HealthController, :index
+  get("/health", ApiWeb.HealthController, :index)
 
   scope "/api", ApiWeb do
-    pipe_through :api
+    pipe_through(:api)
 
-    post "/insights", InsightController, :generate
-    get "/reports/fleet", ReportController, :fleet_summary
-    get "/reports/incidents", ReportController, :incident_report
+    post("/insights", InsightController, :generate)
+    get("/reports/fleet", ReportController, :fleet_summary)
+    get("/reports/incidents", ReportController, :incident_report)
+    get("/reports/sustainability", ReportController, :sustainability_report)
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
@@ -25,10 +26,10 @@ defmodule ApiWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do
-      pipe_through [:fetch_session, :protect_from_forgery]
+      pipe_through([:fetch_session, :protect_from_forgery])
 
-      live_dashboard "/dashboard", metrics: ApiWeb.Telemetry
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
+      live_dashboard("/dashboard", metrics: ApiWeb.Telemetry)
+      forward("/mailbox", Plug.Swoosh.MailboxPreview)
     end
   end
 end

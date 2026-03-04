@@ -4,7 +4,7 @@ import { sustainabilityData as initialData } from '../data/mockData';
 
 export function Sustainability({ onNavigate }: { onNavigate: (view: string) => void }) {
   // Using initial mock data as base, could be expanded in hook
-  const { downloadReport } = useFleet();
+  const { downloadReport, downloadSustainabilityPDF } = useFleet();
   const data = initialData;
 
   return (
@@ -51,7 +51,7 @@ export function Sustainability({ onNavigate }: { onNavigate: (view: string) => v
               <p className="text-slate-400 text-lg">Métricas de impacto ambiental e eficiência de recursos em tempo real.</p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <button onClick={() => downloadReport('fleet')} className="flex h-10 items-center justify-center gap-2 rounded-lg bg-primary text-white px-4 font-bold hover:opacity-90 transition-opacity">
+              <button onClick={downloadSustainabilityPDF} className="flex h-10 items-center justify-center gap-2 rounded-lg bg-primary text-white px-4 font-bold hover:opacity-90 transition-opacity">
                 <span className="material-symbols-outlined">download</span> Exportar PDF
               </button>
             </div>
