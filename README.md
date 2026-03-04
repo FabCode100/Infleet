@@ -1,51 +1,86 @@
-# 🚚 Infleet - Painel de Gestão de Frota e Telemetria
+# 🚚 Infleet - Painel de Gestão de Frota e Telemetria (Full-Stack)
 
-Uma aplicação front-end moderna, responsiva e de alta performance para monitoramento de frotas em tempo real, análise de telemetria, gestão de incidentes e relatórios ESG (Sustentabilidade).
-
-Este projeto foi construído com foco na experiência do usuário (UX) e interface de usuário (UI) no estilo "Dark Mode" por padrão, utilizando as melhores práticas do ecossistema React.
+Uma plataforma completa para gestão inteligente de frotas, unindo um frontend moderno em React a um backend robusto em Elixir/Phoenix. O sistema oferece monitoramento em tempo real, telemetria avançada, insights gerados por IA e relatórios automatizados.
 
 ---
 
-## ✨ Funcionalidades
+## ✨ Funcionalidades Principais
 
-O painel está dividido em 5 módulos principais:
+### 💻 Frontend (Dashboard)
+- **Dashboard Central**: Visão holística da frota com métricas de saúde e economia.
+- **AI Copilot Insights**: Sugestões acionáveis geradas por inteligência artificial (Gemini) baseadas em telemetria em tempo real.
+- **Monitoramento em Mapa**: Localização live dos veículos integrando telemetria e status.
+- **Relatórios**: Geração de relatórios de incidentes (CSV) e de sustentabilidade (PDF).
+- **Interface Premium**: Design dark mode de alta performance com animações fluidas.
 
-1. **📊 Dashboard (Visão Geral)**
-   - Métricas principais (Veículos online, alertas ativos, economia de CO2).
-   - Mapa de calor e localização em tempo real.
-   - Lista rápida da frota e insights gerados por IA (Copilot).
-
-2. **🗺️ Monitoramento em Tempo Real**
-   - Mapa interativo com a posição exata de cada veículo.
-   - Filtros rápidos (Todos, Em Movimento, Ocioso).
-   - Feed de eventos e logs do sistema em tempo real.
-
-3. **🚛 Detalhes do Veículo (Telemetria)**
-   - Nível de combustível/bateria e estimativa de autonomia.
-   - Gráficos de análise de velocidade e histórico.
-   - Checklist de segurança (frenagens bruscas, curvas acentuadas).
-   - Perfil de condução do motorista.
-
-4. **⚠️ Central de Alertas e Incidentes**
-   - Fila de eventos críticos (Pânico, Telemetria, Cerca Eletrônica).
-   - Linha do tempo detalhada do incidente com dados de telemetria (Velocidade, Força G).
-   - Ações rápidas (Ligar para o motorista, gerar relatório).
-
-5. **🌱 Sustentabilidade (ESG)**
-   - Relatórios de impacto ambiental (CO2 emitido, economia de combustível).
-   - Taxa de adoção de Veículos Elétricos (VE).
-   - Ranking ao vivo dos motoristas mais sustentáveis e eficientes.
+### ⚙️ Backend (API & Processamento)
+- **Telemetria Live**: Socket Phoenix para transmissão de dados de veículos em tempo real.
+- **Processamento de Alertas**: Pipeline Broadway para detecção automática de excesso de velocidade e frenagem brusca.
+- **Jobs em Segundo Plano**: Oban para processamento resiliente de notificações e alertas.
+- **Simulador de Frota**: Sistema GenServer que simula telemetria constante para demonstração.
+- **AI Service**: Integração segura com Google Gemini API para análise de dados.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Stack Tecnológica
 
-- **[React 19](https://react.dev/)**: Biblioteca principal para construção da interface.
-- **[TypeScript](https://www.typescriptlang.org/)**: Tipagem estática para maior segurança e previsibilidade do código.
-- **[Vite](https://vitejs.dev/)**: Bundler ultrarrápido para desenvolvimento.
-- **[Tailwind CSS v4](https://tailwindcss.com/)**: Framework de CSS utilitário para estilização rápida e responsiva.
-- **[Material Symbols](https://fonts.google.com/icons)**: Ícones modernos e consistentes do Google.
-- **[Google Fonts (Inter)](https://fonts.google.com/specimen/Inter)**: Tipografia limpa e legível.
+### Frontend
+- **React 19** + **TypeScript**
+- **Vite** (Build Tool)
+- **Tailwind CSS v4** (Styling)
+- **jsPDF** (Relatórios PDF)
+- **Phoenix JS Client** (WebSockets)
+
+### Backend
+- **Elixir** + **Phoenix Framework**
+- **Ecto** (ORM & Migrations)
+- **PostgreSQL (Neon)** (Banco de Dados)
+- **Broadway** (Data Ingestion)
+- **Oban** (Background Processing)
+- **Req** (HTTP Client para IA)
+
+---
+
+## 🚀 Como Iniciar
+
+### Variáveis de Ambiente
+Crie arquivos `.env` ou configure as variáveis no seu ambiente:
+
+**Backend (`api/.env.production` ou variáveis de ambiente):**
+- `DATABASE_URL`: URL de conexão do PostgreSQL (Neon).
+- `GEMINI_API_KEY`: Sua chave da Google AI Studio.
+- `SECRET_KEY_BASE`: Chave de segurança do Phoenix.
+- `PHX_HOST`: Host de produção (ex: `infleet-api.onrender.com`).
+
+**Frontend:**
+- `VITE_API_URL`: URL da sua API Phoenix (ex: `https://infleet-api.onrender.com/api`).
+
+---
+
+### Execução Local
+
+1. **Clone o repositório**:
+   ```bash
+   git clone https://github.com/FabCode100/Infleet.git
+   cd Infleet
+   ```
+
+2. **Backend (Elixir)**:
+   ```bash
+   cd api
+   mix deps.get
+   mix ecto.setup   # Cria banco e roda sementes
+   mix phx.server
+   ```
+
+3. **Frontend (React)**:
+   ```bash
+   cd ..
+   npm install
+   npm run dev
+   ```
+
+Acesse o painel em `http://localhost:3000`.
 
 ---
 
@@ -53,106 +88,37 @@ O painel está dividido em 5 módulos principais:
 
 ```text
 /
-├── public/               # Assets públicos estáticos
-├── src/
-│   ├── components/       # Componentes reutilizáveis (ex: Sidebar)
-│   ├── data/             # Dados mockados para desenvolvimento (mockData.ts)
-│   ├── views/            # Telas principais da aplicação
-│   │   ├── Dashboard.tsx
-│   │   ├── Monitoring.tsx
-│   │   ├── VehicleDetails.tsx
-│   │   ├── Alerts.tsx
-│   │   └── Sustainability.tsx
-│   ├── App.tsx           # Componente raiz e gerenciamento de rotas/estado
-│   ├── index.css         # Configurações globais e variáveis do Tailwind
-│   └── main.tsx          # Ponto de entrada do React
-├── index.html            # Template HTML principal
-├── package.json          # Dependências e scripts do projeto
-├── tailwind.config.ts    # (Integrado via @theme no index.css no Tailwind v4)
-└── vite.config.ts        # Configuração do Vite
+├── api/                  # Backend Elixir/Phoenix
+│   ├── lib/api/          # Lógica de negócio (Fleet, Services, IA)
+│   ├── lib/api_web/      # Controllers, Channels e Router
+│   ├── priv/repo/        # Migrations e Seeds
+│   └── Dockerfile        # Configuração para Deploy
+├── src/                  # Frontend React
+│   ├── components/       # Componentes de UI
+│   ├── hooks/            # Hooks customizados (useFleet, useCopilot)
+│   ├── services/         # Integrações (aiService, fleetSocket)
+│   └── views/            # Telas da aplicação
+├── render.yaml           # Configuração de Infraestrutura (Render)
+├── package.json          # Dependências do Frontend
+└── README.md             # Documentação
 ```
 
 ---
 
-## 🚀 Como Executar o Projeto Localmente
+## 🌐 Deploy
 
-### Pré-requisitos
-- Node.js (versão 18 ou superior)
-- npm, yarn ou pnpm
-
-### Passos
-
-1. **Clone o repositório** (se aplicável):
-   ```bash
-   git clone https://github.com/seu-usuario/infleet-dashboard.git
-   cd infleet-dashboard
-   ```
-
-2. **Instale as dependências**:
-   ```bash
-   npm install
-   ```
-
-3. **Inicie o servidor de desenvolvimento**:
-   ```bash
-   npm run dev
-   ```
-
-4. **Acesse no navegador**:
-   Abra `http://localhost:3000` (ou a porta indicada no terminal).
+A plataforma está pronta para deploy automatizado:
+- **Banco de Dados**: Neon (PostgreSQL Serverless).
+- **Backend (API)**: Render.com (utilizando o `render.yaml` incluso).
+- **Frontend**: Vercel ou Render Static Site.
 
 ---
 
-## 🔌 Guia de Integração com o Backend
-
-O projeto foi arquitetado para facilitar a integração com APIs reais. Atualmente, a aplicação consome dados estáticos localizados em `src/data/mockData.ts`.
-
-Para conectar ao seu backend, siga estes passos em qualquer uma das telas (ex: `src/views/Dashboard.tsx`):
-
-1. Localize o `useEffect` no início do componente.
-2. Remova os dados iniciais do `useState` (opcional, pode deixar como estado de loading).
-3. Descomente e ajuste a chamada `fetch` ou utilize bibliotecas como `axios` ou `React Query`.
-
-**Exemplo de integração:**
-
-```tsx
-import React, { useState, useEffect } from 'react';
-
-export function Dashboard({ onNavigate }) {
-  // 1. Inicie com um estado vazio ou de loading
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // 2. Faça a chamada para a sua API real
-    fetch('https://sua-api.com/v1/dashboard')
-      .then(response => response.json())
-      .then(apiData => {
-        setData(apiData);
-        setLoading(false);
-      })
-      .catch(error => console.error("Erro ao buscar dados:", error));
-  }, []);
-
-  if (loading) return <div>Carregando painel...</div>;
-
-  return (
-    // ... renderização do componente usando {data.totalVehicles}, etc.
-  );
-}
-```
-
-### Endpoints Sugeridos para a API
-Para que o frontend funcione perfeitamente, sugerimos que o seu backend forneça os seguintes endpoints (baseados na estrutura do `mockData.ts`):
-
-- `GET /api/dashboard` - Resumo geral, lista rápida de veículos e alertas.
-- `GET /api/monitoring` - Posições em tempo real da frota e feed de eventos.
-- `GET /api/vehicles/:id` - Dados detalhados de telemetria de um veículo específico.
-- `GET /api/alerts` - Fila de incidentes críticos e histórico.
-- `GET /api/sustainability` - Métricas ESG e ranking de motoristas.
+## 📝 Notas de Versão
+- **v1.1**: Adicionado suporte a relatórios PDF de Sustentabilidade.
+- **v1.2**: Migração para Gemini 2.5/2.0 Flash para insights em tempo real.
+- **v1.3**: Correção de roteamento de relatórios e normalização de caminhos de API.
 
 ---
 
-## 📝 Licença
-
-Este projeto é de uso restrito e confidencial. Todos os direitos reservados.
+**Infleet Dashboard - Gestão de Frota Conectada**
