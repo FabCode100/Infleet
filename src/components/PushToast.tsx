@@ -74,9 +74,10 @@ interface SingleToastProps {
     notification: PushNotification;
     index: number;
     onDismiss: (id: string) => void;
+    hideOnMobile?: boolean;
 }
 
-function SingleToast({ notification, onDismiss, index }: SingleToastProps) {
+function SingleToast({ notification, onDismiss, index, hideOnMobile }: SingleToastProps) {
     const [isVisible, setIsVisible] = useState(false);
     const [isExiting, setIsExiting] = useState(false);
     const [progress, setProgress] = useState(100);
@@ -113,7 +114,7 @@ function SingleToast({ notification, onDismiss, index }: SingleToastProps) {
 
     return (
         <div
-            className={`relative overflow-hidden rounded-2xl border ${style.border} ${style.bg} backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible && !isExiting
+            className={`relative overflow-hidden rounded-2xl border ${style.border} ${style.bg} backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${hideOnMobile ? 'hidden md:block' : ''} ${isVisible && !isExiting
                 ? 'opacity-100 translate-x-0 scale-100'
                 : isExiting
                     ? 'opacity-0 translate-x-[120%] scale-95'
@@ -225,6 +226,7 @@ export function PushToastContainer({ notifications, onDismiss, onMarkRead, onOpe
                     notification={notif}
                     index={index}
                     onDismiss={onDismiss}
+                    hideOnMobile={index > 0}
                 />
             ))}
 

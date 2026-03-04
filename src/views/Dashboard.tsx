@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useFleet } from '../hooks/useFleet';
 import { useCopilot } from '../hooks/useCopilot';
 import { Sidebar } from '../components/Sidebar';
@@ -7,6 +8,7 @@ import { NotificationBell } from '../components/NotificationBell';
 export function Dashboard({ onNavigate, notificationProps }: { onNavigate: (view: string) => void; notificationProps?: any }) {
   const { data } = useFleet();
   const { insight, isLoading } = useCopilot(data.vehicles, data.alerts);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
@@ -42,11 +44,41 @@ export function Dashboard({ onNavigate, notificationProps }: { onNavigate: (view
                 onClick={() => notificationProps.setIsOpen(true)}
               />
             )}
-            <button className="flex items-center gap-3 pl-2 pr-4 py-1.5 bg-surface rounded-full border border-border-subtle">
-              <img className="size-7 rounded-full object-cover" alt="User profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwxNDr1sZ-SAp1awb7ktoAiQjcLTDug9LFcne0E6btH6MxSdcL-GS1jZ-4zqL9CXQkZFvLeatxreQK-SMDy_iKY3fZl5g5tdwKIF1vVaNDnxDlZJLUWA3XOTcXX5_oOJGtCFuVBEWXLcFbhoAuoageJgeFPy2YOkhVw3d2E2JK_OY0Ic1o3dLH7qi8J67RYrSgQoZEUuOtLnBJyrNIL50c9kCqKFuuNLjHagVqE9cY7D8Oudg6icqaqZS8wNNA8oNUJzBJ99A09PdX" />
-              <span className="text-sm font-medium">Alex Rivera</span>
-              <span className="material-symbols-outlined text-sm">expand_more</span>
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => setProfileOpen(!profileOpen)}
+                className="flex items-center gap-3 pl-2 pr-4 py-1.5 bg-surface rounded-full border border-border-subtle hover:bg-white/5 transition-colors relative z-50"
+              >
+                <img className="size-7 rounded-full object-cover" alt="User profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwxNDr1sZ-SAp1awb7ktoAiQjcLTDug9LFcne0E6btH6MxSdcL-GS1jZ-4zqL9CXQkZFvLeatxreQK-SMDy_iKY3fZl5g5tdwKIF1vVaNDnxDlZJLUWA3XOTcXX5_oOJGtCFuVBEWXLcFbhoAuoageJgeFPy2YOkhVw3d2E2JK_OY0Ic1o3dLH7qi8J67RYrSgQoZEUuOtLnBJyrNIL50c9kCqKFuuNLjHagVqE9cY7D8Oudg6icqaqZS8wNNA8oNUJzBJ99A09PdX" />
+                <span className="text-sm font-medium">Alex Rivera</span>
+                <span className={`material-symbols-outlined text-sm transition-transform ${profileOpen ? 'rotate-180' : ''}`}>expand_more</span>
+              </button>
+
+              {profileOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setProfileOpen(false)}></div>
+                  <div className="absolute right-0 mt-2 w-56 bg-surface border border-border-subtle rounded-xl shadow-2xl py-2 z-50 animate-slide-up origin-top-right">
+                    <div className="px-4 py-3 border-b border-border-subtle mb-1">
+                      <p className="text-sm font-bold text-white">Alex Rivera</p>
+                      <p className="text-xs text-slate-400">Diretor de Operações (Infleet)</p>
+                    </div>
+                    <button className="w-full text-left px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-white flex items-center gap-3 transition-colors">
+                      <span className="material-symbols-outlined text-lg">person</span>
+                      Meu Perfil
+                    </button>
+                    <button className="w-full text-left px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-white flex items-center gap-3 transition-colors">
+                      <span className="material-symbols-outlined text-lg">settings</span>
+                      Configurações da Frota
+                    </button>
+                    <div className="h-px bg-border-subtle mx-4 my-2"></div>
+                    <button className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-white/5 flex items-center gap-3 transition-colors">
+                      <span className="material-symbols-outlined text-lg">logout</span>
+                      Terminar Sessão
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </header>
 
