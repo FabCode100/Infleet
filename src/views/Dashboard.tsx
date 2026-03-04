@@ -2,8 +2,9 @@ import { useFleet } from '../hooks/useFleet';
 import { useCopilot } from '../hooks/useCopilot';
 import { Sidebar } from '../components/Sidebar';
 import { MobileBottomNav, MobileHeader } from '../components/MobileNav';
+import { NotificationBell } from '../components/NotificationBell';
 
-export function Dashboard({ onNavigate }: { onNavigate: (view: string) => void }) {
+export function Dashboard({ onNavigate, notificationProps }: { onNavigate: (view: string) => void; notificationProps?: any }) {
   const { data } = useFleet();
   const { insight, isLoading } = useCopilot(data.vehicles, data.alerts);
 
@@ -14,10 +15,13 @@ export function Dashboard({ onNavigate }: { onNavigate: (view: string) => void }
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Mobile Header */}
         <MobileHeader title="Dashboard Infleet" onNavigate={onNavigate}>
-          <div className="relative">
-            <span className="material-symbols-outlined p-2 text-slate-400">notifications</span>
-            <span className="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-background-dark"></span>
-          </div>
+          {notificationProps && (
+            <NotificationBell
+              unreadCount={notificationProps.unreadCount}
+              criticalCount={notificationProps.criticalCount}
+              onClick={() => notificationProps.setIsOpen(true)}
+            />
+          )}
         </MobileHeader>
 
         {/* Desktop Header */}
@@ -31,10 +35,13 @@ export function Dashboard({ onNavigate }: { onNavigate: (view: string) => void }
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="relative">
-              <span className="material-symbols-outlined p-2 text-slate-400 hover:text-white cursor-pointer">notifications</span>
-              <span className="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-background-dark"></span>
-            </div>
+            {notificationProps && (
+              <NotificationBell
+                unreadCount={notificationProps.unreadCount}
+                criticalCount={notificationProps.criticalCount}
+                onClick={() => notificationProps.setIsOpen(true)}
+              />
+            )}
             <button className="flex items-center gap-3 pl-2 pr-4 py-1.5 bg-surface rounded-full border border-border-subtle">
               <img className="size-7 rounded-full object-cover" alt="User profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwxNDr1sZ-SAp1awb7ktoAiQjcLTDug9LFcne0E6btH6MxSdcL-GS1jZ-4zqL9CXQkZFvLeatxreQK-SMDy_iKY3fZl5g5tdwKIF1vVaNDnxDlZJLUWA3XOTcXX5_oOJGtCFuVBEWXLcFbhoAuoageJgeFPy2YOkhVw3d2E2JK_OY0Ic1o3dLH7qi8J67RYrSgQoZEUuOtLnBJyrNIL50c9kCqKFuuNLjHagVqE9cY7D8Oudg6icqaqZS8wNNA8oNUJzBJ99A09PdX" />
               <span className="text-sm font-medium">Alex Rivera</span>
