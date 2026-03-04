@@ -9,9 +9,11 @@ Uma plataforma completa para gestão inteligente de frotas, unindo um frontend m
 ### 💻 Frontend (Dashboard)
 - **Dashboard Central**: Visão holística da frota com métricas de saúde e economia.
 - **AI Copilot Insights**: Sugestões acionáveis geradas por inteligência artificial (Gemini) baseadas em telemetria em tempo real.
+- **Sistema Premium de Notificações**: Alertas críticos em tempo real com "Push Toasts" animados, avisos sonoros polifónicos e vibrações nativas.
+- **Notification Center**: Painel de controle lateral completo para consultar histórico de incidentes em formato glassmorphism.
 - **Monitoramento em Mapa**: Localização live dos veículos integrando telemetria e status.
 - **Relatórios**: Geração de relatórios de incidentes (CSV) e de sustentabilidade (PDF).
-- **Interface Premium**: Design dark mode de alta performance com animações fluidas.
+- **Interface Premium UX**: Design dark mode de alta performance, dropdowns de perfil de usuário e animações fluidas focadas em produtividade.
 
 ### ⚙️ Backend (API & Processamento)
 - **Telemetria Live**: Socket Phoenix para transmissão de dados de veículos em tempo real.
@@ -118,6 +120,7 @@ A plataforma está pronta para deploy automatizado:
 - **v1.1**: Adicionado suporte a relatórios PDF de Sustentabilidade.
 - **v1.2**: Migração para Gemini 2.5/2.0 Flash para insights em tempo real.
 - **v1.3**: Correção de roteamento de relatórios e normalização de caminhos de API.
+- **v1.4**: Implementação do sistema premium de Notificações Push, Alertas Críticos (Toasts/Sons) e Menus Interativos.
 
 ---
 
